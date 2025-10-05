@@ -140,14 +140,10 @@ Infinite-Starlab-Knowledge-Explorer/
 ├── index.html              # Main homepage
 ├── graph.html              # Knowledge graph visualization
 ├── about.html              # About page
-├── chat.html               # Chat interface (if applicable)
-├── dashboard.html          # User dashboard
 ├── data/                   # Research paper JSON files
 │   ├── *.json             # Individual research papers
 ├── categories/             # Category definitions
 │   └── categories_color.json
-├── model/                  # 3D models and assets
-├── sound/                  # Audio files
 └── README.md              # This file
 ```
 
