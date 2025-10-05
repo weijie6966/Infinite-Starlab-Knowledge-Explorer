@@ -1,0 +1,88 @@
+{
+  "paper_id": "parabolic_flight_acceleration_profiles",
+  "title": "Acceleration profiles and processing methods for parabolic flight",
+  "background": "Parabolic flights provide cost-effective access to weightless and reduced gravity conditions but lack standardized acceleration data and analysis methods. These flights simulate space environments for research validation but reference profiles are not widely available.",
+  "objective": "To develop and validate an open-source solution for collecting, analyzing, and classifying altered gravity environments during parabolic flights, enabling better planning and analysis of space analog experiments.",
+  "methods": "Used Slam Stick X™ accelerometer on Boeing 727-200F with 20 parabolas, implemented Euclidean norm for orientation-independent analysis, applied change point detection algorithms, and developed unsupervised classification of flight phases.",
+  "results": "Achieved 0.041±0.005 g during 0g parabolas (19.5±1.4s duration), 0.159 g lunar gravity (23.7s), and 0.356 g Mars gravity (28.9±0.7s). Successfully classified all flight phases using change point detection and filtering methods.",
+  "conclusion": "Provides comprehensive open-source tools for parabolic flight acceleration characterization, facilitating standardized experiment planning and analysis for space research validation.",
+  "metadata": {
+    "authors": [],
+    "publication_date": "",
+    "doi": "",
+    "journal": "NPJ Microgravity"
+  },
+  "extracted_entities": {
+    "core_problems": ["Limited access to actual space environments for research validation", "High cost of spaceflight experiments", "Lack of standardized acceleration data from parabolic flights", "Inconsistent analysis methods across research teams", "Difficulty characterizing local GIA environments within aircraft"],
+    "solution_types": ["Open-source data acquisition and analysis pipeline", "Commercial off-the-shelf hardware implementation", "Orientation-independent acceleration processing", "Unsupervised machine learning classification"],
+    "key_techniques": ["Euclidean norm calculation for orientation independence", "Change point detection algorithms", "Zero-phase Butterworth filtering (0.01 Hz HPF)", "Power spectral density analysis", "Linear regression for parabola characterization"],
+    "benefits": ["Cost-effective space research validation", "Open data and code enables reproducibility", "Hardware agnostic approach", "Facilitates experiment planning with realistic expectations", "Enables local GIA environment measurement"],
+    "key_outcomes": ["0g parabolas: 0.041±0.005 g for 19.5±1.4s", "Lunar gravity: 0.159 g for 23.7s", "Mars gravity: 0.356 g for 28.9±0.7s", "Successfully classified 97 flight periods automatically", "Validated hardware with <2% calibration error"],
+    "confidence": "Validated on actual Boeing 727-200F parabolic flight with 20 parabolas, comparison to factory calibration standards",
+    "gaps": ["Single flight validation (limited sample size)", "Varied flight conditions not tested", "More complex classification may be needed for diverse flight profiles"],
+    "opportunities": ["Adapt for suborbital flights and drop towers", "Extend to lunar/Mars mission simulation optimization", "Integrate with biological experiment timing protocols", "Develop real-time classification for experiment triggering"],
+    "category": ["Technology Development", "Protocol Optimization", "Human Physiology", "Lunar-Relevant", "Mars-Relevant", "ISS Research"]
+  },
+  "learning_notes": [
+    {
+      "id": "LN1",
+      "note": "The study achieved highly consistent reduced gravity levels across multiple parabolas: 0.041±0.005 g during 0g phases (17 parabolas, 19.5±1.4s duration), exactly 0.356 g for both Mars gravity parabolas (28.9±0.7s), and 0.159 g for lunar gravity (23.7s), demonstrating the precision achievable with modern parabolic flight operations."
+    },
+    {
+      "id": "LN2",
+      "note": "The orientation-independent Euclidean norm approach (square root of x²+y²+z² acceleration components) enabled robust phase classification regardless of accelerometer mounting, crucial for experiments where optimal sensor orientation may conflict with other constraints. This method achieved <2% calibration error compared to Earth's 1g reference."
+    },
+    {
+      "id": "LN3",
+      "note": "Two-stage change point detection successfully identified 48 mean g level transitions and 97 total flight periods automatically: first identifying mean changes, then applying linear slope detection within 10s windows to separate stable regimes from rapid transitions, achieving unsupervised classification of all flight phases."
+    },
+    {
+      "id": "LN4",
+      "note": "The Slam Stick X™ hardware (65g, 76×30×15mm) provided advantages over NASA's SFEM including 10× lower mass/volume, wider temperature range (-40°C to +80°C), and dual DC/piezoelectric sensors enabling both g-level and high-frequency vibration measurement up to 20kHz, facilitating integration into diverse experimental payloads."
+    },
+    {
+      "id": "LN5",
+      "note": "Filter optimization using power spectral density analysis determined 0.01 Hz as the optimal half-power frequency for zero-phase Butterworth filtering, preserving parabola dynamics while rejecting higher frequency noise. This filtering reduced lateral acceleration noise while maintaining accurate g-level transitions critical for experiment timing."
+    },
+    {
+      "id": "LN6",
+      "note": "The complete open-source solution includes raw/calibrated data (Open Science Framework), analysis code (GitHub), and hardware specifications, addressing the critical gap in publicly available parabolic flight acceleration references and enabling standardized comparison across research institutions and space agencies."
+    },
+    {
+      "id": "LN7",
+      "note": "The methodology successfully classified flight phases using simple thresholds: parabola (≤0.9g), hypergravity (>1.1g), and other (0.9-1.1g) with duration filtering (>100s for 'other'), demonstrating that complex machine learning isn't always necessary for reliable parabolic flight analysis when proper preprocessing is applied."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "Q1",
+      "question": "What mathematical approach provided orientation-independent acceleration analysis for parabolic flight classification?",
+      "options": ["Fourier transform", "Euclidean norm", "Principal component analysis", "Kalman filtering"],
+      "answer": "Euclidean norm"
+    },
+    {
+      "id": "Q2",
+      "question": "What was the average duration achieved during 0g parabolas in this study?",
+      "options": ["15.2±0.8s", "19.5±1.4s", "22.1±2.3s", "25.7±1.9s"],
+      "answer": "19.5±1.4s"
+    },
+    {
+      "id": "Q3",
+      "question": "Which hardware characteristic was NOT mentioned as an advantage of the Slam Stick X™ over NASA's SFEM?",
+      "options": ["Lower mass and volume", "Wider temperature range", "Higher sampling frequency", "Lower cost"],
+      "answer": "Lower cost"
+    },
+    {
+      "id": "Q4",
+      "question": "What filtering method and frequency were optimized for parabola identification?",
+      "options": ["0.01 Hz zero-phase Butterworth", "0.1 Hz Kalman filter", "1.0 Hz moving average", "10 Hz low-pass RC filter"],
+      "answer": "0.01 Hz zero-phase Butterworth"
+    },
+    {
+      "id": "Q5",
+      "question": "How many total flight periods were automatically classified using the two-stage change point detection approach?",
+      "options": ["48", "67", "97", "112"],
+      "answer": "97"
+    }
+  ]
+}

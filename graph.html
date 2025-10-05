@@ -1,0 +1,941 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Infinite Starlab Knowledge Explorer — Knowledge Graph</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .starry-bg { background: radial-gradient(ellipse at bottom, #0b1d3a 0%, #000 70%); }
+    .twinkle { position: absolute; inset:0; pointer-events:none; }
+    .twinkle::before, .twinkle::after { content:''; position:absolute; inset:0; background:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.9) 0, rgba(255,255,255,0) 60%),
+      radial-gradient(1.5px 1.5px at 80% 20%, rgba(255,255,255,0.7) 0, rgba(255,255,255,0) 60%),
+      radial-gradient(1.8px 1.8px at 50% 70%, rgba(255,255,255,0.8) 0, rgba(255,255,255,0) 60%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.6) 0, rgba(255,255,255,0) 60%),
+      radial-gradient(1px 1px at 60% 40%, rgba(255,255,255,0.6) 0, rgba(255,255,255,0) 60%);
+      animation: twinkle 6s linear infinite;
+    }
+    .twinkle::after { filter: blur(1px); opacity: 0.6; animation-duration: 9s; }
+    @keyframes twinkle { 0%{opacity:.6} 50%{opacity:1} 100%{opacity:.6} }
+    .glass-card { background: rgba(255,255,255,0.06); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.15); }
+    .glow { text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+    .btn-glow { box-shadow: 0 0 12px rgba(123, 97, 255, 0.6); }
+    
+    /* Node interaction styles */
+    .node-circle {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .node-circle:hover {
+      filter: brightness(1.3);
+      stroke-width: 3;
+      stroke: rgba(255, 255, 255, 0.8);
+    }
+    .node-selected {
+      filter: brightness(1.5) drop-shadow(0 0 15px currentColor);
+      stroke-width: 4 !important;
+      stroke: rgba(255, 255, 255, 0.9) !important;
+      animation: pulse-glow 2s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-glow {
+      from { filter: brightness(1.5) drop-shadow(0 0 15px currentColor); }
+      to { filter: brightness(1.8) drop-shadow(0 0 25px currentColor); }
+    }
+    
+    /* Tooltip styles */
+    #nodeTooltip {
+      transform: translate(-50%, -100%);
+      margin-top: -10px;
+    }
+    #nodeTooltip .glass-card {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .category-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      margin: 2px 4px 2px 0;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    .category-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 4px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-white starry-bg relative">
+  <div class="twinkle"></div>
+  <nav class="w-full glass-card">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl font-bold glow">∞</span>
+        <span class="text-xl font-semibold glow">Infinite Starlab Knowledge Explorer</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="hover:text-blue-300">Home</a>
+        <a href="graph.html" class="hover:text-blue-300">Knowledge Graph</a>
+        <a href="dashboard.html" class="hover:text-blue-300 hidden">My Learning</a>
+        <a href="about.html" class="hover:text-blue-300">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-4">
+    <div class="glass-card p-4 rounded-lg">
+      <div class="flex flex-col items-start gap-3">
+        <div class="flex items-center gap-2">
+          <input id="searchInput" placeholder="Search modules..." class="w-64 px-3 py-2 rounded bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          <button id="clearSearch" class="px-3 py-2 rounded bg-white/10 hover:bg-white/20">Clear</button>
+          <button id="filterToggle" class="px-3 py-2 rounded bg-indigo-600/80 hover:bg-indigo-600">Filter</button>
+        </div>
+        <div id="filterBar" class="mt-3 space-y-4 hidden"></div>
+        <div class="flex items-center gap-2">
+          <span id="dataStatus" class="text-sm text-white/70"></span>
+        </div>
+      </div>
+    </div>
+    <div class="glass-card p-4 rounded-lg">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+       <div class="md:col-span-2">
+         <svg id="graphSvg" class="w-full h-[520px]"></svg>
+       </div>
+       <div class="md:col-span-1">
+         <div id="modulePanel" class="rounded-lg bg-white/5 border border-white/10 p-4 h-full max-h-[520px] overflow-y-auto">
+         <h2 id="moduleTitle" class="text-xl font-semibold mb-2 text-indigo-300">Choose a Module</h2>
+           <div id="moduleContent" class="text-white/80 text-sm">
+           Select a module on the left to view background and learning objectives.
+           </div>
+           <div class="mt-4 flex gap-2">
+             <button id="startLearningBtn" class="px-3 py-2 rounded bg-blue-600/80 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed" disabled>Key Finding</button>
+             <button id="aiChatBtn" class="px-3 py-2 rounded bg-teal-600/80 hover:bg-teal-600">AI</button>
+           </div>
+         </div>
+       </div>
+     </div>
+     </div>
+     <div class="glass-card p-4 rounded-lg">
+       <h2 class="text-lg font-semibold text-indigo-300">Category color</h2>
+       <div id="categoryLegend" class="mt-2 flex flex-wrap gap-3"></div>
+     </div>
+   </main>
+ 
+   <div id="aiModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center">
+     <div class="glass-card w-full max-w-2xl rounded-lg p-4">
+       <div class="flex items-center justify-between mb-2">
+         <h3 class="text-lg font-semibold text-indigo-300">AI Chat</h3>
+         <button id="aiChatClose" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20">Close</button>
+       </div>
+       <div id="aiContextHint" class="text-xs text-white/70 mb-2"></div>
+       <div id="aiChatMessages" class="h-64 overflow-y-auto bg-white/5 border border-white/10 rounded p-2 space-y-2"></div>
+       <div class="mt-3 flex items-center gap-2">
+         <input id="aiChatInput" class="flex-1 px-3 py-2 rounded bg-white/10 border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Type your question..." />
+         <button id="aiChatSend" class="px-3 py-2 rounded bg-blue-600/80 hover:bg-blue-600">Send</button>
+       </div>
+       <div id="aiChatStatus" class="mt-2 text-xs text-white/60"></div>
+     </div>
+   </div>
+ 
+   <!-- Node Hover Tooltip -->
+   <div id="nodeTooltip" class="fixed pointer-events-none z-40 hidden">
+     <div class="glass-card rounded-lg p-3 max-w-sm shadow-2xl border border-white/20">
+       <div id="tooltipTitle" class="font-semibold text-white text-sm mb-1"></div>
+       <div id="tooltipCategories" class="category-container"></div>
+       <div id="tooltipDescription" class="text-white/80 text-xs leading-relaxed"></div>
+     </div>
+   </div>
+ 
+   <script>
+   let selectedModule = null;
+// ---- Simplified Progress Storage ----
+const PROG_KEY = 'learningProgress';
+function getProgress(){ try { return JSON.parse(localStorage.getItem(PROG_KEY)||'{}'); } catch { return {}; } }
+function setProgress(p){ localStorage.setItem(PROG_KEY, JSON.stringify(p)); }
+function renderPanel(){
+  const panel = document.getElementById('modulePanel');
+  const titleEl = document.getElementById('moduleTitle');
+  const content = document.getElementById('moduleContent');
+  const learnBtn = document.getElementById('startLearningBtn');
+  if(!panel || !titleEl || !content || !learnBtn) return;
+  if(!selectedModule){
+    titleEl.textContent = 'Choose a Module';
+    content.innerHTML = 'Select a module on the left to view background and learning objectives.';
+    learnBtn.disabled = true; return;
+  }
+  const m = selectedModule;
+  const title = m.title || m.id || 'Untitled Module';
+  let bg = '';
+  if (m.summary && typeof m.summary === 'object') { bg = m.summary.background || ''; }
+  bg = bg || m.background || m.description || '';
+  let objectiveList = [];
+  const sumObj = (m.summary && typeof m.summary === 'object') ? m.summary.objective : undefined;
+  if (Array.isArray(m.objectives)) objectiveList = m.objectives;
+  else if (Array.isArray(m.objective)) objectiveList = m.objective;
+  else if (Array.isArray(sumObj)) objectiveList = sumObj;
+  else { const objStr = typeof m.objective === 'string' ? m.objective : (typeof sumObj === 'string' ? sumObj : ''); objectiveList = objStr ? [objStr] : []; }
+  titleEl.textContent = title;
+  content.innerHTML = `
+    <div class="space-y-4">
+      ${bg ? `
+      <section>
+        <div class="text-xs font-semibold tracking-wider mb-1 text-indigo-300">Background</div>
+        <div class="text-white/90 whitespace-pre-line leading-relaxed">${bg}</div>
+      </section>` : ''}
+      ${objectiveList.length ? `
+      <section>
+        <div class="text-xs font-semibold tracking-wider mb-1 text-indigo-300">Learning Objectives</div>
+        <ul class="list-disc list-inside space-y-1 text-white/85">
+          ${objectiveList.map(o=>`<li>${o}</li>`).join('')}
+        </ul>
+      </section>` : ''}
+    </div>
+  `;
+  learnBtn.disabled = false;
+}
+   // 添加全局渲染状态：节点位置与当前列表
+   let posById = {};
+   let currentRenderedList = [];
+   
+   function drawSelectionEdges(){
+     const edgesG = document.getElementById('edges');
+     if(!edgesG) return;
+     while(edgesG.firstChild) edgesG.removeChild(edgesG.firstChild);
+     if(!selectedModule) return;
+     const selId = selectedModule.id;
+     const selPos = posById[selId];
+     if(!selPos) return;
+     const selCats = (selectedModule.extracted_entities && Array.isArray(selectedModule.extracted_entities.category)) ? selectedModule.extracted_entities.category.map(String) : [];
+     if(selCats.length === 0) return;
+     const neighbors = currentRenderedList.filter(m=>m.id!==selId && Array.isArray((m.extracted_entities||{}).category) && (m.extracted_entities.category.map(String).some(c=>selCats.includes(String(c)))));
+     const baseOffset = 2.0;
+     neighbors.forEach(nb=>{
+       const nbPos = posById[nb.id]; if(!nbPos) return;
+       const nbCats = (nb.extracted_entities && Array.isArray(nb.extracted_entities.category)) ? nb.extracted_entities.category.map(String) : [];
+       const shared = selCats.filter(c=>nbCats.includes(c));
+       const dx = nbPos.cx - selPos.cx; const dy = nbPos.cy - selPos.cy;
+       const len = Math.hypot(dx,dy) || 1; const ux = dx/len, uy = dy/len; const px = -uy, py = ux;
+       const mid = (shared.length - 1)/2;
+       shared.forEach((cat, idx)=>{
+         const color = categoryColorMap[cat] || 'rgba(255,255,255,0.6)';
+         const o = (idx - mid) * baseOffset;
+         const x1 = selPos.cx + px*o, y1 = selPos.cy + py*o;
+         const x2 = nbPos.cx + px*o, y2 = nbPos.cy + py*o;
+         const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+         line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+         line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+         line.setAttribute('stroke', color);
+         line.setAttribute('stroke-width', '1.2');
+         line.setAttribute('vector-effect', 'non-scaling-stroke');
+         line.setAttribute('stroke-linecap', 'round');
+         edgesG.appendChild(line);
+       });
+     });
+   }
+   
+   // ---- Helper Functions ----
+   function hexToRgb(hex) {
+     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+     return result ? {
+       r: parseInt(result[1], 16),
+       g: parseInt(result[2], 16),
+       b: parseInt(result[3], 16)
+     } : null;
+   }
+   
+   // ---- Node Tooltip Functions ----
+   function showNodeTooltip(module, event) {
+     const tooltip = document.getElementById('nodeTooltip');
+     const titleEl = document.getElementById('tooltipTitle');
+     const categoriesEl = document.getElementById('tooltipCategories');
+     const descriptionEl = document.getElementById('tooltipDescription');
+     
+     if (!tooltip || !titleEl || !categoriesEl || !descriptionEl) return;
+     
+     // 设置内容
+     titleEl.textContent = module.title || module.id || 'Untitled Module';
+     
+     // 创建彩色类别标签
+     const cats = (module.extracted_entities && Array.isArray(module.extracted_entities.category)) 
+       ? module.extracted_entities.category : [];
+     
+     categoriesEl.innerHTML = '';
+     if (cats.length > 0) {
+       cats.forEach(category => {
+         const badge = document.createElement('span');
+         badge.className = 'category-badge';
+         badge.textContent = category;
+         
+         // 从categoryColorMap获取颜色
+         const color = categoryColorMap[category] || '#6B7280'; // 默认灰色
+         badge.style.backgroundColor = color;
+         
+         // 根据背景色调整文字颜色以确保可读性
+         const rgb = hexToRgb(color);
+         if (rgb) {
+           const brightness = (rgb.r * 299 + rgb.g * 587 + rgb.b * 114) / 1000;
+           badge.style.color = brightness > 128 ? '#000000' : '#FFFFFF';
+         }
+         
+         categoriesEl.appendChild(badge);
+       });
+     } else {
+       const noCategoryBadge = document.createElement('span');
+       noCategoryBadge.className = 'category-badge';
+       noCategoryBadge.textContent = 'No Category';
+       noCategoryBadge.style.backgroundColor = '#6B7280';
+       noCategoryBadge.style.color = '#FFFFFF';
+       categoriesEl.appendChild(noCategoryBadge);
+     }
+     
+     // 获取描述信息
+     let description = '';
+     if (module.summary && typeof module.summary === 'object') {
+       description = module.summary.background || module.summary.description || '';
+     }
+     description = description || module.background || module.description || 'No description available';
+     
+     // 限制描述长度
+     if (description.length > 150) {
+       description = description.substring(0, 150) + '...';
+     }
+     descriptionEl.textContent = description;
+     
+     // 设置位置
+     tooltip.style.left = event.pageX + 'px';
+     tooltip.style.top = event.pageY + 'px';
+     tooltip.classList.remove('hidden');
+   }
+   
+   function hideNodeTooltip() {
+     const tooltip = document.getElementById('nodeTooltip');
+     if (tooltip) {
+       tooltip.classList.add('hidden');
+     }
+   }
+   
+   function setSelectedModule(m){
+     const prevId = selectedModule ? selectedModule.id : null;
+     selectedModule = m || null;
+     if (prevId != null && selectedModule && prevId !== selectedModule.id) {
+       // clear AI chat when switching to a different node
+       if (typeof aiMessages !== 'undefined') { aiMessages = []; renderAIMessages(); }
+       const input = document.getElementById('aiChatInput'); if (input) input.value = '';
+       const status = document.getElementById('aiChatStatus'); if (status) status.textContent = '';
+       const sendBtn = document.getElementById('aiChatSend'); if (sendBtn) sendBtn.disabled = false;
+     }
+     
+     // 更新所有节点的选中状态
+     document.querySelectorAll('.node-circle').forEach(circle => {
+       circle.classList.remove('node-selected');
+       if (selectedModule && circle._moduleData && circle._moduleData.id === selectedModule.id) {
+         circle.classList.add('node-selected');
+       }
+     });
+     
+     renderPanel(); drawSelectionEdges(); /* renderConnectionsMatrix(); */
+   }
+     let modules = [];
+     const statusEl = document.getElementById('dataStatus');
+    const filterOptions = { authors: [], dates: [], categories: [] };
+    // 多选筛选状态：作者/年份/类型均为数组
+    const filterState = { authors: [], years: [], categories: [] };
+    let categoryColorMap = {};
+    async function loadCategoryColors(){
+      try {
+        const res = await fetch('categories/categories_color.json');
+        const data = await res.json();
+        categoryColorMap = {};
+        if (data && Array.isArray(data.categories)) {
+          data.categories.forEach(it => {
+            if (it && it.name != null && it.color != null) {
+              categoryColorMap[String(it.name)] = String(it.color);
+            }
+          });
+        }
+        renderCategoryLegend();
+        renderGraph(); // 颜色加载完成后刷新节点/连线颜色
+      } catch(e){ /* ignore */ }
+    }
+    function renderCategoryLegend(){
+      const legend = document.getElementById('categoryLegend');
+      if(!legend) return;
+      legend.innerHTML = '';
+      const selected = Array.isArray(filterState.categories) ? filterState.categories : [];
+      let names = selected.length > 0 ? selected.slice() : Object.keys(categoryColorMap);
+      names = names.filter(n => !!n);
+      if(names.length === 0){
+        const tip = document.createElement('div');
+        tip.className = 'text-white/70 text-sm';
+        tip.textContent = '暂无类别颜色数据';
+        legend.appendChild(tip);
+        return;
+      }
+      names.forEach(name => {
+        const color = categoryColorMap[name] || '#888888';
+        const item = document.createElement('div');
+        item.className = 'flex items-center gap-2';
+        const swatch = document.createElement('span');
+        swatch.className = 'inline-block w-4 h-4 rounded-sm border border-white/30';
+        swatch.style.backgroundColor = color;
+        const label = document.createElement('span');
+        label.className = 'text-sm text-white/90';
+        label.textContent = name;
+        item.appendChild(swatch);
+        item.appendChild(label);
+        legend.appendChild(item);
+      });
+    }
+     function extractFilterOptions(mods){
+      const a=new Set(), d=new Set(), c=new Set();
+      mods.forEach(m=>{
+        const authors = (m.metadata && Array.isArray(m.metadata.authors)) ? m.metadata.authors : [];
+        authors.forEach(name=>{ if(name!=null) a.add(String(name)); });
+        const pub = (m.metadata && m.metadata.publication_date!=null) ? String(m.metadata.publication_date) : '';
+        if(pub) d.add(pub);
+        const cats = (m.extracted_entities && Array.isArray(m.extracted_entities.category)) ? m.extracted_entities.category : [];
+        cats.forEach(cat=>{ if(cat!=null) c.add(String(cat)); });
+      });
+      filterOptions.authors = Array.from(a).sort((x,y)=>x.localeCompare(y,'zh-Hans-CN'));
+      filterOptions.dates = Array.from(d).sort((x,y)=>y.localeCompare(x));
+      filterOptions.categories = Array.from(c).sort((x,y)=>x.localeCompare(y,'zh-Hans-CN'));
+    }
+     function renderFilterBar(){
+       const container = document.getElementById('filterBar');
+       if(!container) return;
+       container.innerHTML = '';
+
+      // Only show category filter (removed year filter)
+      const groups = [
+        { key:'categories', label:'categories', options: filterOptions.categories }
+      ];
+      const labelClass = 'inline-block px-3 py-1 rounded bg-indigo-600 text-white text-sm mr-3 shrink-0 w-20';
+      const baseCapsule = 'px-3 py-1 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white/90 text-sm mr-2 mb-2';
+      const activeCapsule = 'bg-cyan-500 border-cyan-400 text-white';
+      groups.forEach(g=>{
+         const row = document.createElement('div');
+         row.className = 'flex items-start gap-3';
+         const lab = document.createElement('span');
+         lab.className = labelClass;
+         lab.textContent = g.label;
+         row.appendChild(lab);
+         const list = document.createElement('div');
+         list.className = 'flex items-center flex-wrap gap-2 flex-1';
+         g.options.forEach(val=>{
+           const btn = document.createElement('button');
+           const current = Array.isArray(filterState[g.key]) ? filterState[g.key] : [];
+           const selected = current.includes(val);
+           btn.className = baseCapsule + (selected ? (' '+activeCapsule) : '');
+           btn.textContent = val;
+           btn.addEventListener('click', ()=>{
+             const arr = Array.isArray(filterState[g.key]) ? filterState[g.key] : [];
+             const idx = arr.indexOf(val);
+             if(idx >= 0) arr.splice(idx,1); else arr.push(val);
+             filterState[g.key] = arr;
+             renderFilterBar();
+             renderGraph();
+             renderCategoryLegend();
+           });
+           list.appendChild(btn);
+         });
+         row.appendChild(list);
+         container.appendChild(row);
+       });
+     }
+     function populateFilters(){
+       const authorSel = document.getElementById('authorFilter');
+       const dateSel = document.getElementById('dateFilter');
+       const catSel = document.getElementById('categoryFilter');
+       if(!authorSel || !dateSel || !catSel) return;
+       authorSel.innerHTML = '<option value="">All Authors</option>' + filterOptions.authors.map(a=>`<option value="${a}">${a}</option>`).join('');
+       dateSel.innerHTML = '<option value="">All Years</option>' + filterOptions.dates.map(y=>`<option value="${y}">${y}</option>`).join('');
+       catSel.innerHTML = '<option value="">All Categories</option>' + filterOptions.categories.map(cat=>`<option value="${cat}">${cat}</option>`).join('');
+     }
+     function normalizeCoursesData(data, srcName){
+       const arr = Array.isArray(data) ? data : [data];
+       const base = (srcName||'').split('/').pop().replace(/\.json$/i,'');
+       return arr.map((m, idx)=>{
+         let id = m && m.id != null ? String(m.id).trim() : '';
+         if(!id && m && m.paper_id != null) id = String(m.paper_id).trim();
+         if(!id && m && m.title != null) id = String(m.title).trim();
+         if(!id){
+           if(m && m.module && m.module.id != null) id = String(m.module.id).trim();
+           else if(m && m.course && m.course.id != null) id = String(m.course.id).trim();
+           else id = base ? `${base}-${idx+1}` : `module-${idx+1}`;
+         }
+         return Object.assign({}, m, { id });
+       });
+     }
+     async function loadAllModulesFromDataDir(){
+       let files = [];
+       try {
+         const res = await fetch('data/');
+         const html = await res.text();
+         const doc = new DOMParser().parseFromString(html, 'text/html');
+         const anchors = Array.from(doc.querySelectorAll('a'));
+         files = anchors
+           .map(a => a.getAttribute('href') || '')
+           .filter(href => href.toLowerCase().endsWith('.json'));
+       } catch(e){
+         // Fallback to at least load the local Yeast_in_Space.json
+         files = ['data/Yeast_in_Space.json'];
+       }
+       modules = [];
+       for(const href of files){
+         const url = (href.startsWith('data/') || href.startsWith('/')) ? href : ('data/' + href);
+         const srcName = href.split('/').pop();
+         try {
+           const r = await fetch(url);
+           const d = await r.json();
+           modules.push(...normalizeCoursesData(d, srcName));
+         } catch(err) {
+           // skip invalid json
+         }
+       }
+       // 规范化为字符串 id
+       modules = modules.filter(m=>m && m.id != null).map(m=> Object.assign({}, m, { id: String(m.id).trim() }));
+       statusEl.textContent = 'Auto-loaded ' + files.length + ' file(s), ' + modules.length + ' module(s)';
+       extractFilterOptions(modules);
+       renderFilterBar();
+       renderGraph();
+       renderPanel();
+     }
+     loadAllModulesFromDataDir();
+     loadCategoryColors();
+ 
+     const svg = document.getElementById('graphSvg');
+     let scale = 1, tx = 0, ty = 0;
+     let dragging = false, dragStartX = 0, dragStartY = 0, startTx = 0, startTy = 0;
+     function updateTransform(){ const inner = document.getElementById('graphInner'); if(inner){ inner.setAttribute('transform', `translate(${tx},${ty}) scale(${scale})`); } }
+ 
+     function renderGraph(){
+      const q = document.getElementById('searchInput').value?.toLowerCase()||'';
+      const { authors: selectedAuthors, years: selectedYears, categories: selectedCategories } = filterState;
+       const filtered = modules.filter(m=>{
+         const titleStr = String(m.title||m.id||'');
+         const titleMatch = titleStr.toLowerCase().includes(q);
+         const authors = (m.metadata && Array.isArray(m.metadata.authors)) ? m.metadata.authors : [];
+         const pub = (m.metadata && m.metadata.publication_date!=null) ? String(m.metadata.publication_date) : '';
+         const cats = (m.extracted_entities && Array.isArray(m.extracted_entities.category)) ? m.extracted_entities.category : [];
+        const authorMatch = (Array.isArray(selectedAuthors) && selectedAuthors.length>0) ? authors.some(a=>selectedAuthors.includes(String(a))) : true;
+        const dateMatch = (Array.isArray(selectedYears) && selectedYears.length>0) ? selectedYears.includes(pub) : true;
+        const catMatch = (Array.isArray(selectedCategories) && selectedCategories.length>0) ? cats.some(c=>selectedCategories.includes(String(c))) : true;
+        return titleMatch && authorMatch && dateMatch && catMatch;
+       });
+       // shuffle the filtered list (Fisher-Yates)
+       const list = filtered.slice();
+       for(let i=list.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [list[i], list[j]] = [list[j], list[i]]; }
+       while(svg.firstChild) svg.removeChild(svg.firstChild);
+       const w = svg.clientWidth, h = svg.clientHeight;
+       const cellW = 220; const cellH = 160; const marginX = 60, marginY = 60; const cols = Math.max(1, Math.floor((w - marginX*2)/cellW) || 1);
+       const defs = document.createElementNS('http://www.w3.org/2000/svg','defs'); svg.appendChild(defs);
+       list.forEach((m,i)=>{
+         const grad=document.createElementNS('http://www.w3.org/2000/svg','radialGradient'); grad.id='grad'+i;
+         const s1=document.createElementNS('http://www.w3.org/2000/svg','stop'); s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#6e7ff5');
+         const s2=document.createElementNS('http://www.w3.org/2000/svg','stop'); s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#3b2a65');
+         grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad);
+       });
+       const inner = document.createElementNS('http://www.w3.org/2000/svg','g'); inner.id = 'graphInner'; svg.appendChild(inner);
+       const edgesG = document.createElementNS('http://www.w3.org/2000/svg','g'); edgesG.id='edges'; edgesG.setAttribute('pointer-events','none'); inner.appendChild(edgesG);
+       const nodesG = document.createElementNS('http://www.w3.org/2000/svg','g'); nodesG.id='nodes'; nodesG.setAttribute('pointer-events','all'); inner.appendChild(nodesG);
+       // compute initial random positions
+       const positions = [];
+       for(let i=0;i<list.length;i++){
+         const cx = marginX + Math.random()*(w - marginX*2);
+         const cy = marginY + Math.random()*(h - marginY*2);
+         positions[i] = {cx, cy};
+       }
+       // resolve collisions (simple repulsion)
+       const minDist = 70; // ~ 2*radius + padding (increased for better spacing)
+       for(let iter=0; iter<20; iter++){
+         for(let i=0;i<positions.length;i++){
+           for(let j=i+1;j<positions.length;j++){
+             const dx = positions[j].cx - positions[i].cx;
+             const dy = positions[j].cy - positions[i].cy;
+             const d = Math.hypot(dx, dy) || 0.0001;
+             if(d < minDist){
+               const push = (minDist - d) / 2;
+               const ux = dx / d, uy = dy / d;
+               positions[i].cx -= ux * push; positions[i].cy -= uy * push;
+               positions[j].cx += ux * push; positions[j].cy += uy * push;
+               positions[i].cx = Math.max(marginX, Math.min(w - marginX, positions[i].cx));
+               positions[i].cy = Math.max(marginY, Math.min(h - marginY, positions[i].cy));
+               positions[j].cx = Math.max(marginX, Math.min(w - marginX, positions[j].cx));
+               positions[j].cy = Math.max(marginY, Math.min(h - marginY, positions[j].cy));
+             }
+           }
+         }
+       }
+       // ---- 默认不绘制任何边，待选择后再绘制 ----
+       // 构建类别索引，后续用于选择时计算关系
+       const catIndexMap = new Map();
+       list.forEach((m, idx) => {
+         const cats = (m.extracted_entities && Array.isArray(m.extracted_entities.category)) ? m.extracted_entities.category : [];
+         cats.forEach(c => {
+           const key = String(c);
+           if(!catIndexMap.has(key)) catIndexMap.set(key, []);
+           catIndexMap.get(key).push(idx);
+         });
+       });
+       const pairCatsMap = new Map();
+       catIndexMap.forEach((indices, cat) => {
+         const n = indices.length;
+         for(let a=0; a<n; a++){
+           for(let b=a+1; b<n; b++){
+             const i = indices[a];
+             const j = indices[b];
+             const key = i<j ? `${i}-${j}` : `${j}-${i}`;
+             if(!pairCatsMap.has(key)) pairCatsMap.set(key, []);
+             pairCatsMap.get(key).push(cat);
+           }
+         }
+       });
+       // 注意：此处不再绘制所有配对边，保留给选择事件使用
+       
+       // ---- 绘制节点（隐藏标题，只显示圆与分段环） ----
+       list.forEach((m,i)=>{
+         const {cx, cy} = positions[i];
+         const cats = (m.extracted_entities && Array.isArray(m.extracted_entities.category)) ? m.extracted_entities.category : [];
+         const mainCat = (cats && cats.length>0) ? String(cats[0]) : '';
+         const mainColor = categoryColorMap[mainCat] || '#6e7ff5';
+         const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+         const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+         circle.setAttribute('cx', cx); circle.setAttribute('cy', cy); circle.setAttribute('r', 18);
+         circle.setAttribute('fill', mainColor); circle.setAttribute('stroke','white'); circle.setAttribute('stroke-opacity','0.3');
+         circle.style.filter = 'drop-shadow(0 0 6px rgba(123,97,255,.7))';
+         circle.classList.add('node-circle');
+         
+         // 存储模块数据到circle元素
+         circle._moduleData = m;
+         
+         const updateNodeAppearance = () => {
+           // 移除所有状态类
+           circle.classList.remove('node-selected');
+           
+           // 如果是选中的节点，添加选中样式
+           if (selectedModule && selectedModule.id === m.id) {
+             circle.classList.add('node-selected');
+           }
+         };
+         
+         const select = () => { 
+           if(list[i]){ 
+             setSelectedModule(list[i]); 
+             // 更新所有节点的外观
+             document.querySelectorAll('.node-circle').forEach(updateNodeAppearance);
+           } 
+         };
+         
+         circle.addEventListener('click', select);
+         circle.addEventListener('mouseenter', (event) => {
+           showNodeTooltip(m, event);
+         });
+         circle.addEventListener('mouseleave', () => {
+           hideNodeTooltip();
+         });
+         circle.addEventListener('mousemove', (event) => {
+           // 更新tooltip位置
+           const tooltip = document.getElementById('nodeTooltip');
+           if (tooltip && !tooltip.classList.contains('hidden')) {
+             tooltip.style.left = event.pageX + 'px';
+             tooltip.style.top = event.pageY + 'px';
+           }
+         });
+         
+         // 初始化节点外观
+         updateNodeAppearance();
+         const ringR = 22; const ringW = 3.5;
+         const n = Array.isArray(cats) ? cats.length : 0;
+         if(n > 0){
+           for(let k=0; k<n; k++){
+             const cat = String(cats[k]);
+             const color = categoryColorMap[cat] || '#999999';
+             const start = (2*Math.PI) * (k / n);
+             const end = (2*Math.PI) * ((k+1) / n);
+             const x1 = cx + ringR * Math.cos(start);
+             const y1 = cy + ringR * Math.sin(start);
+             const x2 = cx + ringR * Math.cos(end);
+             const y2 = cy + ringR * Math.sin(end);
+             const largeArc = ((end - start) > Math.PI) ? 1 : 0;
+             const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+             path.setAttribute('d', `M ${x1} ${y1} A ${ringR} ${ringR} 0 ${largeArc} 1 ${x2} ${y2}`);
+             path.setAttribute('fill','none');
+             path.setAttribute('stroke', color);
+             path.setAttribute('stroke-width', ringW);
+             path.setAttribute('vector-effect','non-scaling-stroke');
+             path.setAttribute('stroke-linecap','butt');
+             g.appendChild(path);
+           }
+         }
+         // 不再添加标题文本标签，仅保留圆形
+         g.appendChild(circle);
+         nodesG.appendChild(g);
+       });
+       // 更新当前渲染列表与位置索引
+       currentRenderedList = list.slice();
+       posById = {};
+       for(let i=0;i<list.length;i++){ posById[String(list[i].id)] = positions[i]; }
+       if(selectedModule && !list.some(x=>x.id===selectedModule.id)) setSelectedModule(null);
+       updateTransform();
+       // 根据当前选择刷新边与关系矩阵（例如筛选改变后）
+       drawSelectionEdges();
+       renderConnectionsMatrix();
+     }
+     document.getElementById('searchInput').addEventListener('input', renderGraph);
+     // Filter toggle functionality
+     document.getElementById('filterToggle').addEventListener('click', ()=>{
+       const filterBar = document.getElementById('filterBar');
+       const toggleBtn = document.getElementById('filterToggle');
+       if(filterBar.classList.contains('hidden')){
+         filterBar.classList.remove('hidden');
+         toggleBtn.textContent = 'Hide Filter';
+       } else {
+         filterBar.classList.add('hidden');
+         toggleBtn.textContent = 'Filter';
+       }
+     });
+     // removed legacy dropdown listeners: authorFilter/dateFilter/categoryFilter
+     document.getElementById('clearSearch').onclick = ()=>{
+       document.getElementById('searchInput').value='';
+       filterState.authors=[]; filterState.years=[]; filterState.categories=[];
+       renderFilterBar();
+       renderGraph();
+       renderCategoryLegend();
+     };
+
+   // bind action buttons
+   document.getElementById('startLearningBtn').addEventListener('click', ()=>{
+     if(!selectedModule) return;
+     const id = selectedModule.id;
+     window.location.href = 'index.html?moduleId=' + encodeURIComponent(id) + '&start=intro';
+   });
+
+ 
+     // pan (drag) & zoom (wheel)
+     svg.addEventListener('pointerdown', (e)=>{
+       // avoid starting drag when clicking on nodes so that click navigation works
+       if (e.target && typeof e.target.closest === 'function' && e.target.closest('#nodes')) { return; }
+       dragging=true; dragStartX=e.clientX; dragStartY=e.clientY; startTx=tx; startTy=ty; svg.setPointerCapture(e.pointerId);
+     });
+     svg.addEventListener('pointermove', (e)=>{ if(!dragging) return; const dx=e.clientX-dragStartX; const dy=e.clientY-dragStartY; tx=startTx+dx; ty=startTy+dy; updateTransform(); });
+     svg.addEventListener('pointerup', ()=>{ dragging=false; });
+     svg.addEventListener('pointerleave', ()=>{ dragging=false; });
+     svg.addEventListener('wheel', (e)=>{ e.preventDefault(); const factor = e.deltaY>0 ? 0.9 : 1.1; scale = Math.max(0.3, Math.min(3, scale*factor)); updateTransform(); }, { passive:false });
+
+   // ===== AI Chat Logic =====
+   let aiMessages = [];
+   
+   // Lightweight safe Markdown renderer (no external deps)
+   function escapeHtml(str){
+     return String(str).replace(/[&<>\"]/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[s]));
+   }
+   function mdToHtml(src){
+     let s = String(src || '');
+     // Code fences
+     s = s.replace(/```([\s\S]*?)```/g, (m, code)=>`<pre><code>${escapeHtml(code)}</code></pre>`);
+     // Inline code
+     s = s.replace(/`([^`]+)`/g, (m, code)=>`<code>${escapeHtml(code)}</code>`);
+     // Bold and italic
+     s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+     s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+     // Links [text](url)
+     s = s.replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, (m, text, url)=>`<a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(text)}</a>`);
+     // Blockquotes
+     s = s.replace(/^>\s?(.*)$/gm, (m, q)=>`<blockquote>${escapeHtml(q)}</blockquote>`);
+     // Headings
+     s = s.replace(/^(#{1,6})\s*(.+)$/gm, (m, hashes, text)=>{
+       const level = Math.min(6, hashes.length); return `<h${level}>${escapeHtml(text)}</h${level}>`;
+     });
+     // Lists and paragraphs
+     const lines = s.split('\n');
+     let html = ''; let inUl = false; let inOl = false;
+     const flushLists = ()=>{ if(inUl){ html += '</ul>'; inUl=false; } if(inOl){ html += '</ol>'; inOl=false; } };
+     for(const line of lines){
+       const ul = /^\s*[-*]\s+(.+)/.exec(line);
+       const ol = /^\s*\d+\.\s+(.+)/.exec(line);
+       if(ul){ if(!inUl){ flushLists(); html += '<ul>'; inUl=true; } html += `<li>${ul[1]}</li>`; continue; }
+       if(ol){ if(!inOl){ flushLists(); html += '<ol>'; inOl=true; } html += `<li>${ol[1]}</li>`; continue; }
+       // normal line
+       flushLists();
+       if(/^(<h\d>|<pre>|<blockquote>|<p>|<ul>|<ol>|<code>)/.test(line)){ html += line; }
+       else if(line.trim().length){ html += `<p>${line}</p>`; }
+     }
+     flushLists();
+     return html;
+   }
+   
+   // 获取与当前模块相同类别的其他论文
+   function getRelatedPapersByCategory(currentModule, maxCount = 5) {
+     if (!currentModule || !currentModule.extracted_entities || !Array.isArray(currentModule.extracted_entities.category)) {
+       return [];
+     }
+     
+     const currentCategories = currentModule.extracted_entities.category;
+     const currentId = currentModule.id || currentModule.title;
+     const relatedPapers = [];
+     
+     // 遍历所有模块，找到具有相同类别的其他论文
+     modules.forEach(module => {
+       if (module === currentModule || (module.id || module.title) === currentId) {
+         return; // 跳过当前模块
+       }
+       
+       if (module.extracted_entities && Array.isArray(module.extracted_entities.category)) {
+         const moduleCategories = module.extracted_entities.category;
+         
+         // 检查是否有共同类别
+         const hasCommonCategory = currentCategories.some(cat => 
+           moduleCategories.some(modCat => 
+             cat.toLowerCase().trim() === modCat.toLowerCase().trim()
+           )
+         );
+         
+         if (hasCommonCategory) {
+           relatedPapers.push({
+             title: module.title || module.id || 'Untitled',
+             authors: (module.metadata && Array.isArray(module.metadata.authors)) ? module.metadata.authors.join(', ') : '',
+             year: (module.metadata && module.metadata.publication_date) ? String(module.metadata.publication_date) : '',
+             categories: moduleCategories.join(', '),
+             background: (module.summary && typeof module.summary === 'object' ? (module.summary.background || '') : (module.background || module.description || '')).substring(0, 200) + '...'
+           });
+         }
+       }
+     });
+     
+     return relatedPapers.slice(0, maxCount);
+   }
+   
+   // 分析用户问题是否涉及相关论文
+   function shouldIncludeRelatedPapers(userMessage) {
+     if (!userMessage) return false;
+     
+     const keywords = [
+       '相关', '类似', '其他', '同类', '相同类别', '相似', '比较',
+       'related', 'similar', 'other', 'same category', 'compare', 'comparison',
+       '其他论文', '相关研究', '同领域', '相关文献'
+     ];
+     
+     const message = userMessage.toLowerCase();
+     return keywords.some(keyword => message.includes(keyword.toLowerCase()));
+   }
+   
+   function buildModuleContext(m, userMessage = ''){
+     if(!m){
+       return 'No module selected. Please select a node in the diagram on the left to provide context.';
+     }
+     const title = String(m.title||m.id||'Untitled');
+     const authors = (m.metadata && Array.isArray(m.metadata.authors)) ? m.metadata.authors.join(', ') : '';
+     const pub = (m.metadata && m.metadata.publication_date!=null) ? String(m.metadata.publication_date) : '';
+     const cats = (m.extracted_entities && Array.isArray(m.extracted_entities.category)) ? m.extracted_entities.category.join(', ') : '';
+     const bg = (m.summary && typeof m.summary==='object' ? (m.summary.background||'') : (m.background||m.description||''));
+     const objectivesArr = Array.isArray(m.objectives) ? m.objectives : (Array.isArray(m.objective) ? m.objective : []);
+     const objLine = objectivesArr.length ? objectivesArr.map(x=>`- ${x}`).join('\n') : '';
+     
+     let context = `You are a learning assistant. Please answer around the current module.\nModule Title:${title}\nauthor:${authors}\nYear:${pub}\ncategory:${cats}\nbackground:${bg}\nLearning Objectives:\n${objLine}`;
+     
+     // 检查用户问题是否涉及相关论文
+     if (shouldIncludeRelatedPapers(userMessage)) {
+       const relatedPapers = getRelatedPapersByCategory(m, 3);
+       if (relatedPapers.length > 0) {
+         context += '\n\nRelated Papers with Same Categories:';
+         relatedPapers.forEach((paper, index) => {
+           context += `\n${index + 1}. Title: ${paper.title}`;
+           if (paper.authors) context += `\n   Authors: ${paper.authors}`;
+           if (paper.year) context += `\n   Year: ${paper.year}`;
+           context += `\n   Categories: ${paper.categories}`;
+           if (paper.background) context += `\n   Background: ${paper.background}`;
+           context += '\n';
+         });
+         context += '\nYou can reference these related papers when answering questions about similar research, comparisons, or broader context within the same field.';
+       }
+     }
+     
+     return context;
+   }
+   function renderAIMessages(){
+     const box = document.getElementById('aiChatMessages'); if(!box) return;
+     box.innerHTML = '';
+     aiMessages.forEach(msg=>{
+       const item = document.createElement('div');
+       const isUser = msg.role === 'user';
+       item.className = 'px-3 py-2 rounded ai-msg ' + (isUser ? 'bg-blue-500/20 border border-blue-400/40': 'bg-purple-500/20 border border-purple-400/40');
+       item.innerHTML = `<div class="ai-msg-content">${mdToHtml(msg.content)}</div>`;
+       box.appendChild(item);
+     });
+     box.scrollTop = box.scrollHeight;
+   }
+   function appendAIMsg(role, content){ aiMessages.push({role, content}); renderAIMessages(); }
+   function openAIModal(){
+     const modal = document.getElementById('aiModal'); if(!modal) return;
+     const hint = document.getElementById('aiContextHint');
+     
+     if (selectedModule) {
+       const relatedPapers = getRelatedPapersByCategory(selectedModule, 3);
+       let hintText = `Current Title: ${String(selectedModule.title||selectedModule.id)}`;
+       
+       if (relatedPapers.length > 0) {
+         hintText += ` | ${relatedPapers.length} related papers available`;
+         hintText += ` | Try asking: "What are the related papers?" or "Compare with similar research"`;
+       }
+       
+       hint.textContent = hintText;
+     } else {
+       hint.textContent = 'No module selected (you can still ask questions).';
+     }
+     
+     modal.classList.remove('hidden');
+     setTimeout(()=>{ const input = document.getElementById('aiChatInput'); if(input) input.focus(); }, 50);
+   }
+   function closeAIModal(){
+     const modal = document.getElementById('aiModal'); if(!modal) return; modal.classList.add('hidden');
+     // clear AI chat when closing the modal
+     if (typeof aiMessages !== 'undefined') { aiMessages = []; renderAIMessages(); }
+     const input = document.getElementById('aiChatInput'); if (input) input.value = '';
+     const status = document.getElementById('aiChatStatus'); if (status) status.textContent = '';
+     const sendBtn = document.getElementById('aiChatSend'); if (sendBtn) sendBtn.disabled = false;
+   }
+   async function sendAIMessage(){
+     const input = document.getElementById('aiChatInput'); const status = document.getElementById('aiChatStatus');
+     if(!input) return; const text = String(input.value||'').trim(); if(!text) return;
+     appendAIMsg('user', text); input.value=''; renderAIMessages();
+     const sendBtn = document.getElementById('aiChatSend'); if(sendBtn) sendBtn.disabled = true; if(status) status.textContent = 'Thinking...';
+     try {
+       const ctx = buildModuleContext(selectedModule, text);
+       const payload = { model: 'deepseek-v3.1:671b-cloud', stream: false, messages: [{role:'system', content: ctx}, ...aiMessages] };
+       const res = await fetch('http://localhost:11434/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+       if(!res.ok){ throw new Error('Request failed: '+res.status); }
+       const data = await res.json();
+       let assistantText = '';
+       if(data && data.message && typeof data.message.content === 'string') assistantText = data.message.content;
+       else if(typeof data.response === 'string') assistantText = data.response;
+       else assistantText = JSON.stringify(data);
+       appendAIMsg('assistant', assistantText);
+       if(status) status.textContent = '';
+     } catch(err){
+       appendAIMsg('assistant', 'Failed to call local Ollama. Please ensure it is installed and running, and that CORS is allowed. Error: '+(err.message||String(err)));
+       if(status) status.textContent = 'Error or network unreachable';
+     } finally {
+       const sendBtn2 = document.getElementById('aiChatSend'); if(sendBtn2) sendBtn2.disabled = false;
+     }
+   }
+   // 绑定事件
+   (function(){
+     const btn = document.getElementById('aiChatBtn'); if(btn) btn.addEventListener('click', openAIModal);
+     const closeBtn = document.getElementById('aiChatClose'); if(closeBtn) closeBtn.addEventListener('click', closeAIModal);
+     const sendBtn = document.getElementById('aiChatSend'); if(sendBtn) sendBtn.addEventListener('click', sendAIMessage);
+     const input = document.getElementById('aiChatInput'); if(input){
+       input.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendAIMessage(); } });
+     }
+   })();
+
+   </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+{
+  "paper_id": "Cryptococcus_albidus_meningitis_case_report",
+  "title": "Cryptococcus albidus meningitis: A case report and literature review",
+  "background": "Cryptococcus albidus (also called Naganishia albida) is a rare yeast species that causes central nervous system (CNS) infections with high mortality rates (67% for CNS infections). This fungus was first reported to infect humans in 1965 and has been isolated from cerebrospinal fluid, lung abscesses, pleural fluids, and blood specimens. Fewer than 10 cases of C. albidus infection have been reported, and clinical data on appropriate antifungal treatment, particularly in obese patients, are limited.",
+  "objective": "To report the first case of efficacious and safe use of ideal bodyweight to calculate liposomal-amphotericin B dose for a severely obese patient with C. albidus meningitis, and to systematically review cases of CNS infection caused by C. albidus and related species.",
+  "methods": "Case report of a 25-year-old severely obese female patient (158 cm, 100 kg) treated with liposomal-amphotericin B (50 mg/day intravenously) plus 5-fluorocytosine (10 g/day orally) for 6 weeks. Systematic literature review following PRISMA guidelines, searching PubMed, Medline, and Web of Science databases for CNS infections attributed to C. albidus and related species.",
+  "results": "The patient achieved complete resolution of symptoms with normal renal function throughout treatment. No yeast was isolated from CSF samples after 4 weeks of treatment. Literature review identified 9 cases of CNS infections caused by C. albidus or related species. Risk factors included leukemia, cancer, HIV, corticosteroid use, surgery, and animal contact. Headache was the most common symptom (present in 89% of cases). Amphotericin B was the only consistently effective antifungal agent.",
+  "conclusion": "Using ideal bodyweight rather than actual bodyweight to calculate liposomal-amphotericin B dose is efficacious and safe for severely obese patients with C. albidus meningitis. Amphotericin B-based treatment should be the first choice, with subsequent therapy guided by susceptibility testing and proper species identification using molecular methods.",
+  "metadata": {
+    "authors": [
+      "Genzhu Wang",
+      "Hang Liu",
+      "Xiaoying Wang",
+      "Zhongdong Li"
+    ],
+    "publication_date": "2025",
+    "doi": "e42125",
+    "journal": "Medicine"
+  },
+  "extracted_entities": {
+    "core_problems": [
+      "Rare fungal infections in immunocompromised hosts",
+      "Limited treatment guidelines for uncommon pathogens",
+      "Pharmacokinetic challenges in obese patients",
+      "Species identification difficulties"
+    ],
+    "solution_types": [
+      "Case-based treatment optimization",
+      "Systematic literature review",
+      "Pharmacokinetic adjustment methodology",
+      "Molecular identification techniques"
+    ],
+    "key_techniques": [
+      "Liposomal-amphotericin B administration",
+      "5-fluorocytosine combination therapy",
+      "VITEK mass spectrometry identification",
+      "PRISMA systematic review methodology",
+      "Antifungal susceptibility testing"
+    ],
+    "benefits": [
+      "Reduced nephrotoxicity in obese patients",
+      "Effective CNS infection clearance",
+      "Proper species identification",
+      "Evidence-based treatment recommendations"
+    ],
+    "key_outcomes": [
+      "67% mortality rate for C. albidus CNS infections",
+      "Successful treatment using ideal bodyweight dosing",
+      "Identification of 9 historical cases",
+      "Headache as most common symptom (89%)"
+    ],
+    "confidence": "Clinical case validation with systematic literature support",
+    "gaps": [
+      "No randomized controlled trials for treatment optimization",
+      "Limited pharmacokinetic data in obese patients",
+      "Incomplete species identification in historical cases",
+      "No established clinical breakpoints for C. albidus"
+    ],
+    "opportunities": [
+      "Development of space-adapted antifungal protocols",
+      "Microgravity pharmacokinetic studies",
+      "Compact mass spectrometry for space diagnostics",
+      "Prevention strategies for immunocompromised astronauts"
+    ],
+    "category": [
+      "Microbiology",
+      "Crew Health",
+      "ISS Research",
+      "Protocol Optimization",
+      "Human Physiology"
+    ]
+  },
+  "learning_notes": [
+    {
+      "id": "LN1",
+      "note": "Cryptococcus albidus CNS infections have a 67% mortality rate, more than double that of other Cryptococcus species, highlighting the severity of rare fungal infections that could impact immunocompromised astronauts during long-duration missions. Only 9 cases have been reported historically, emphasizing the need for robust diagnostic capabilities in space medicine."
+    },
+    {
+      "id": "LN2",
+      "note": "The study demonstrated that using ideal bodyweight (rather than actual weight) for liposomal-amphotericin B dosing in severely obese patients (158 cm, 100 kg) prevented nephrotoxicity while maintaining efficacy. This pharmacokinetic adjustment approach could inform medication dosing protocols for astronauts with varying body compositions."
+    },
+    {
+      "id": "LN3",
+      "note": "Mass spectrometry (VITEK MS) achieved over 95% accuracy for species identification, providing a reliable method for distinguishing C. albidus from related species. This technology could be adapted for compact diagnostic systems in space environments where traditional microbiological methods may be limited."
+    },
+    {
+      "id": "LN4",
+      "note": "The combination therapy of liposomal-amphotericin B (50 mg/day IV) plus 5-fluorocytosine (10 g/day orally) for 6 weeks successfully cleared the infection without renal impairment. This treatment regimen could serve as a template for managing serious fungal infections in resource-limited space settings."
+    },
+    {
+      "id": "LN5",
+      "note": "Risk factors identified for C. albidus infections included immunosuppression, cancer, surgery, and animal contact\u2014factors relevant to astronaut health where immune function may be compromised during spaceflight and contact with biological specimens occurs during research activities."
+    },
+    {
+      "id": "LN6",
+      "note": "The systematic review followed PRISMA guidelines and screened 104 records, ultimately identifying 9 relevant cases. This methodology demonstrates a structured approach to evidence synthesis that could be applied to space medicine literature for developing clinical practice guidelines."
+    },
+    {
+      "id": "LN7",
+      "note": "Antifungal susceptibility testing showed C. albidus had MICs of 0.5 mg/L for amphotericin B, 4 mg/L for fluconazole, and 4 mg/L for 5-fluorocytosine, providing specific data for treatment decisions. Such susceptibility profiles are crucial for antimicrobial stewardship in closed environments like spacecraft."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "Q1",
+      "question": "What is the reported mortality rate for central nervous system infections caused by Cryptococcus albidus?",
+      "options": [
+        "25%",
+        "42%",
+        "67%",
+        "83%"
+      ],
+      "answer": "67%"
+    },
+    {
+      "id": "Q2",
+      "question": "Which dosing adjustment was successfully used for the severely obese patient in this case report?",
+      "options": [
+        "Actual bodyweight",
+        "Ideal bodyweight",
+        "Lean body mass",
+        "Body surface area"
+      ],
+      "answer": "Ideal bodyweight"
+    },
+    {
+      "id": "Q3",
+      "question": "What technology achieved over 95% accuracy for species identification of Cryptococcus albidus?",
+      "options": [
+        "API strip assimilation",
+        "Culture methods",
+        "Mass spectrometry",
+        "Microscopy"
+      ],
+      "answer": "Mass spectrometry"
+    },
+    {
+      "id": "Q4",
+      "question": "What was the most common symptom presented by patients with C. albidus CNS infections according to the literature review?",
+      "options": [
+        "Fever",
+        "Headache",
+        "Nausea",
+        "Altered mental state"
+      ],
+      "answer": "Headache"
+    },
+    {
+      "id": "Q5",
+      "question": "Which antifungal agent showed consistent sensitivity against C. albidus and related species?",
+      "options": [
+        "Fluconazole",
+        "Amphotericin B",
+        "Voriconazole",
+        "Itraconazole"
+      ],
+      "answer": "Amphotericin B"
+    }
+  ]
+}

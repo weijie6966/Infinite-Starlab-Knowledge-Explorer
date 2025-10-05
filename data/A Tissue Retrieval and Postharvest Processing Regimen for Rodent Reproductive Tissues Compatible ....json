@@ -1,0 +1,88 @@
+{
+  "paper_id": "rodent_reproductive_tissue_processing_ISS",
+  "title": "A Tissue Retrieval and Postharvest Processing Regimen for Rodent Reproductive Tissues Compatible with Long-Term Storage on the International Space Station and Postflight Biospecimen Sharing Program",
+  "background": "Space flight experiments with live animals present unique challenges for tissue preservation due to remote harvesting sites, limited return opportunities, and the need to maintain tissue quality during long-term storage on ISS. The Biospecimen Sharing Program aims to maximize data return from limited flight animal payloads.",
+  "objective": "To develop standardized protocols for post-euthanasia tissue harvesting and long-term storage compatible with ISS constraints, enabling recovery of high-quality RNA, protein, and histology from reproductive tissues after extended spaceflight missions.",
+  "methods": "Time-course tissue degradation studies in mice and gerbils, RNAlater preservation testing, histology optimization with Bouin's fixative and ethanol substitution, protein/RNA quality assessment after long-term storage, shipping-compatible protocol development.",
+  "results": "Tissue-specific harvest windows ranged 1-3 hours post-euthanasia. RNAlater preserved RNA quality when tissues were fixed within 40 minutes. Reproductive tissues maintained high-quality RNA and protein after 10 months at -80°C. Stepwise ethanol-PBS-ethanol transitions preserved histology better than rapid transitions.",
+  "conclusion": "Developed comprehensive tissue processing protocols compatible with ISS long-term storage and multi-investigator biospecimen sharing, enabling optimal preservation of spaceflight biological effects in rodent reproductive tissues.",
+  "metadata": {
+    "authors": [],
+    "publication_date": "",
+    "doi": "",
+    "journal": "BioMed Research International"
+  },
+  "extracted_entities": {
+    "core_problems": ["Limited post-landing processing time to preserve spaceflight effects", "Long-term tissue storage requirements on ISS (up to 10 months)", "Multi-investigator tissue sharing logistics", "International shipping restrictions on fixatives", "Remote tissue harvesting at landing sites"],
+    "solution_types": ["Protocol standardization for tissue harvest windows", "RNAlater-based long-term preservation", "Shipping-compatible fixation methods", "Stepwise dehydration/rehydration optimization"],
+    "key_techniques": ["RNAlater tissue stabilization", "Bouin's fixation with ethanol substitution", "Computer-assisted sperm analysis (CASA)", "RNA integrity analysis with Agilent Bioanalyzer", "Western blot protein validation"],
+    "benefits": ["Enables 10-month ISS storage with preserved biomolecule quality", "Facilitates multi-investigator data sharing from limited samples", "Compliant with international shipping safety regulations", "Maximizes scientific return from expensive spaceflight experiments"],
+    "key_outcomes": ["Mouse testes maintain histology up to 3 hours post-euthanasia", "Gerbil ovaries require harvest within 1 hour", "RNAlater preserves RNA/protein quality for 10 months at -80°C", "Stepwise ethanol transitions preserve histology better than rapid changes"],
+    "confidence": "Validated on actual space shuttle (STS-131, STS-133, STS-135) and BION M1 flight tissues with ground controls",
+    "gaps": ["Longer storage intervals beyond 10 months not tested", "Limited tissue types evaluated (reproductive focus)", "Gerbil sample sizes small for statistical analysis"],
+    "opportunities": ["Adapt for other tissue types in Biospecimen Sharing Program", "Extend to lunar/Mars mission scenarios with longer storage", "Apply to in-flight tissue harvest on ISS"],
+    "category": ["Sample Preservation", "ISS Research", "Protocol Optimization", "Resource Management", "Human Physiology", "Lunar-Relevant", "Mars-Relevant"]
+  },
+  "learning_notes": [
+    {
+      "id": "LN1",
+      "note": "The study established species- and tissue-specific harvest windows: mouse testes maintain histology for 3 hours post-euthanasia, while gerbil ovaries degrade significantly after 1.5 hours, showing vacuolization and tissue fragility. This enables prioritization of harvest sequence in multi-investigator scenarios."
+    },
+    {
+      "id": "LN2",
+      "note": "RNAlater preservation enabled recovery of high-quality RNA and protein from reproductive tissues after 10 months at -80°C, compatible with ISS storage between Dragon resupply missions. RNA integrity was maintained when tissues were placed in RNAlater within 40 minutes of euthanasia."
+    },
+    {
+      "id": "LN3",
+      "note": "Stepwise ethanol-PBS-ethanol transitions (70%→50%→30%→10%→PBS with 2-hour intervals) preserved testicular and epididymal histology significantly better than rapid single-step transitions, which caused tissue distortion and nuclear detail loss."
+    },
+    {
+      "id": "LN4",
+      "note": "The protocol addresses international shipping constraints by replacing Bouin's fixative (containing picric acid, prohibited for air transport) with 70% ethanol or PBS, enabling safe transport while maintaining histological quality for spaceflight collaboration."
+    },
+    {
+      "id": "LN5",
+      "note": "Sperm motility analysis showed no significant decline in mouse epididymal sperm for up to 2.5 hours post-euthanasia under all storage conditions (in carcass, on ice, or at room temperature), providing flexibility for reproductive physiology studies."
+    },
+    {
+      "id": "LN6",
+      "note": "The methodology enables Biospecimen Sharing Programs by providing quantitative windows for tissue processing priority, allowing multiple investigators to obtain optimal samples from limited spaceflight animals based on each tissue's degradation sensitivity."
+    },
+    {
+      "id": "LN7",
+      "note": "Western blot analysis confirmed that proteins like estrogen receptor alpha and β-actin remained intact without proteolytic degradation after 10 months of RNAlater storage at -80°C, validating the approach for post-translational modification studies from spaceflight samples."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "Q1",
+      "question": "What is the maximum recommended time window for harvesting gerbil ovaries to maintain histological quality?",
+      "options": ["30 minutes", "1 hour", "2 hours", "3 hours"],
+      "answer": "1 hour"
+    },
+    {
+      "id": "Q2",
+      "question": "Which preservation method enabled successful 10-month storage of tissues at -80°C while maintaining RNA and protein quality?",
+      "options": ["TRIzol only", "Formalin fixation", "RNAlater", "Liquid nitrogen flash freezing"],
+      "answer": "RNAlater"
+    },
+    {
+      "id": "Q3",
+      "question": "Why was Bouin's fixative replaced in the shipping-compatible protocol?",
+      "options": ["It damaged RNA quality", "It contained picric acid prohibited for air transport", "It was too expensive", "It required refrigeration"],
+      "answer": "It contained picric acid prohibited for air transport"
+    },
+    {
+      "id": "Q4",
+      "question": "What was the critical finding regarding tissue processing transitions?",
+      "options": ["Rapid transitions preserved histology best", "Stepwise ethanol transitions caused less tissue damage", "Direct PBS substitution was optimal", "No transitions were necessary"],
+      "answer": "Stepwise ethanol transitions caused less tissue damage"
+    },
+    {
+      "id": "Q5",
+      "question": "How long did the study demonstrate tissues could be stored while maintaining biomolecule quality?",
+      "options": ["3 months", "6 months", "10 months", "18 months"],
+      "answer": "10 months"
+    }
+  ]
+}

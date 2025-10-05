@@ -1,0 +1,64 @@
+{
+  "categories": [
+    {
+      "name": "Plant Biology",
+      "color": "#008000"
+    },
+    {
+      "name": "Microbiology",
+      "color": "#800080"
+    },
+    {
+      "name": "Human Physiology",
+      "color": "#FF0000"
+    },
+    {
+      "name": "Radiation Biology",
+      "color": "#FFA500"
+    },
+    {
+      "name": "Sample Preservation",
+      "color": "#4B0082"
+    },
+    {
+      "name": "Food Production",
+      "color": "#90EE90"
+    },
+    {
+      "name": "Life Support Systems",
+      "color": "#0000FF"
+    },
+    {
+      "name": "ISS Research",
+      "color": "#ADD8E6"
+    },
+    {
+      "name": "Lunar-Relevant",
+      "color": "#808080"
+    },
+    {
+      "name": "Mars-Relevant",
+      "color": "#8B0000"
+    },
+    {
+      "name": "Technology Development",
+      "color": "#FFD700"
+    },
+    {
+      "name": "Protocol Optimization",
+      "color": "#EE82EE"
+    },
+    {
+      "name": "Resource Management",
+      "color": "#006400"
+    },
+    {
+      "name": "Crew Health",
+      "color": "#000080"
+    },
+    {
+      "name": "Biomarker Research",
+      "color": "#FFB6C1"
+    }
+  ]
+}

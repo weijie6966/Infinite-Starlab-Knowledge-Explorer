@@ -1,0 +1,88 @@
+{
+  "paper_id": "14-3-3_phosphoprotein_interaction_networks",
+  "title": "14-3-3 phosphoprotein interaction networks – does isoform diversity present functional interaction specification?",
+  "background": "14-3-3 proteins are major phosphoprotein interaction proteins that constitute key nodes in the Arabidopsis Interactome Map, through which important signals pass. They are present in all eukaryotes and involved in protein interactions mediating signal transduction pathways, with plants having about a dozen 14-3-3 genes providing sequence and functional diversity.",
+  "objective": "To examine whether 14-3-3 isoform sequence diversity indicates functional diversity at the biochemical or cellular level, and to present approaches to address the theory that functional diversity does exist among 14-3-3 isoforms.",
+  "methods": "Comparative analysis of 14-3-3 isoforms including sequence alignment, phylogenetic analysis, yeast two-hybrid studies, co-immunoprecipitation assays, subcellular localization using confocal microscopy with GFP-tagged isoforms and isoform-specific antibodies, TDNA insertion mutant analysis, and biochemical interaction assays.",
+  "results": "The study found strong evidence for functional specificity among 14-3-3 isoforms, including: differential subcellular localization patterns, isoform-specific phenotypes in TDNA mutants, differential client binding affinities, and tissue-specific expression patterns. Specific isoforms showed distinct roles in processes such as photoperiodic flowering, stomatal opening, and root growth.",
+  "conclusion": "True cellular and biochemical functional specificity exists among members of the 14-3-3 family, with certain isoforms having specific interactions and functions not shared with other isoforms, even when present in the same cell.",
+  "metadata": {
+    "authors": ["Not explicitly listed in content"],
+    "publication_date": "Not specified",
+    "doi": "Not specified",
+    "journal": "Frontiers in Plant Science"
+  },
+  "extracted_entities": {
+    "core_problems": ["Understanding molecular mechanisms of plant adaptation to space environments", "Characterizing protein interaction networks in confined growth systems", "Identifying conserved regulatory mechanisms across species for space applications"],
+    "solution_types": ["Comparative isoform analysis", "Functional genomics approaches", "Subcellular localization mapping"],
+    "key_techniques": ["Confocal microscopy", "Yeast two-hybrid screening", "TDNA insertion mutagenesis", "Co-immunoprecipitation", "Sequence alignment and phylogenetic analysis"],
+    "benefits": ["Reveals molecular targets for optimizing plant growth in space", "Provides insights into conserved stress response mechanisms", "Identifies key regulatory nodes for genetic engineering"],
+    "key_outcomes": ["Demonstrated functional specificity among 14-3-3 isoforms", "Identified isoform-specific roles in light signaling and stress responses", "Revealed differential subcellular localization patterns"],
+    "confidence": "Supported by multiple experimental approaches including genetic, biochemical, and cell biological evidence",
+    "gaps": ["Limited understanding of 14-3-3 roles in space-relevant stress responses", "Need for isoform-specific studies in microgravity conditions", "Unknown effects of space radiation on phosphoprotein networks"],
+    "opportunities": ["Application to space crop optimization", "Development of stress-tolerant plants for lunar/Mars missions", "Integration with life support system design"],
+    "category": ["Plant Biology", "ISS Research", "Lunar-Relevant", "Mars-Relevant", "Food Production", "Life Support Systems"]
+  },
+  "learning_notes": [
+    {
+      "id": "LN1",
+      "note": "14-3-3 proteins serve as major phosphoprotein interaction nodes in plant signaling networks, with Arabidopsis containing 13 expressed isoforms that show both conserved and divergent regions in their primary sequences. These proteins interact with phosphorylated peptide sequences through specific motifs (RSxpSxP, RSxxpSxP, YpT) and regulate processes including red light signaling, immunity, abiotic stress response, and metabolic enzyme activity."
+    },
+    {
+      "id": "LN2",
+      "note": "Plant 14-3-3s can be divided into two main subgroups (ε and non-ε groups), with the non-ε group further subdivided into four groupings that emerged in the last 170 million years. The ε group shows deep branching across plant species, suggesting retention of ancestral protein function, while other groups show specialization-driven divergence."
+    },
+    {
+      "id": "LN3",
+      "note": "Phosphorylation of 14-3-3 proteins at specific sites (S58, S64, S132, S185, T233, Y179) can regulate their function by affecting client binding and dimerization capacity. These phosphorylation sites are not universally conserved across isoforms, allowing for isoform-specific regulation and functional diversification in different cellular contexts."
+    },
+    {
+      "id": "LN4",
+      "note": "14-3-3 isoforms form homodimers and heterodimers with varying preferences, influenced by sequence variations in helices 1-4 that affect stabilizing salt bridges in the dimer interface. Dimerization preferences can be isoform-specific, as demonstrated by 14-3-3σ preferring homodimers while 14-3-3ε prefers heterodimers, with phosphorylation status further modulating dimerization."
+    },
+    {
+      "id": "LN5",
+      "note": "Isoform-specific subcellular localization patterns provide strong evidence for functional specificity, with different 14-3-3s partitioning to distinct cellular compartments (nucleus, cytoplasm, plasma membrane, cytoskeleton) within the same cell type. For example, in Arabidopsis roots, 14-3-3λ localizes predominantly to the nucleus while 14-3-3ε associates with the plasma membrane."
+    },
+    {
+      "id": "LN6",
+      "note": "Genetic evidence from TDNA insertion mutants demonstrates isoform-specific phenotypes, such as 14-3-3μ and υ affecting flowering time under red light with 14-3-3μ additionally causing short roots, while closely related isoforms κ and λ show differential roles in Phot2-mediated stomatal opening despite high sequence similarity."
+    },
+    {
+      "id": "LN7",
+      "note": "Biochemical studies reveal isoform-specific client binding affinities, with different Arabidopsis 14-3-3 isoforms showing drastically different interaction levels with proteins like nitrate reductase and H+-ATPase. These specificity patterns are not consistent across different clients, suggesting complex, context-dependent interaction networks."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "Q1",
+      "question": "How many expressed 14-3-3 isoforms are present in Arabidopsis thaliana?",
+      "options": ["7 isoforms", "10 isoforms", "13 isoforms", "15 isoforms"],
+      "answer": "13 isoforms"
+    },
+    {
+      "id": "Q2",
+      "question": "Which of the following phosphorylation sites in 14-3-3 proteins affects both client binding and dimerization capacity?",
+      "options": ["S58", "Y137", "S185", "T233"],
+      "answer": "S58"
+    },
+    {
+      "id": "Q3",
+      "question": "What evidence most strongly supports functional specificity among 14-3-3 isoforms?",
+      "options": ["Sequence similarity", "Conserved binding motifs", "Differential subcellular localization", "Ubiquitous expression patterns"],
+      "answer": "Differential subcellular localization"
+    },
+    {
+      "id": "Q4",
+      "question": "Which Arabidopsis 14-3-3 isoforms were shown to affect photoperiodic flowering through interaction with CONSTANS?",
+      "options": ["κ and λ", "μ and υ", "χ and ω", "ε and π"],
+      "answer": "μ and υ"
+    },
+    {
+      "id": "Q5",
+      "question": "What structural feature primarily determines 14-3-3 dimerization preferences?",
+      "options": ["C-terminal variability", "N-terminal acetylation", "Salt bridges in helices 1-4 interface", "Phosphorylation of helix 9"],
+      "answer": "Salt bridges in helices 1-4 interface"
+    }
+  ]
+}

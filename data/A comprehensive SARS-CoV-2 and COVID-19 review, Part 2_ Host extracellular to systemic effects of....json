@@ -1,0 +1,88 @@
+{
+  "paper_id": "SARS_CoV_2_review_part2",
+  "title": "A comprehensive SARS-CoV-2 and COVID-19 review, Part 2: Host extracellular to systemic effects of SARS-CoV-2 infection",
+  "background": "COVID-19, caused by SARS-CoV-2, has caused significant global morbidity and mortality. This review focuses on the biological effects of SARS-CoV-2 on post-acute disease in the context of tissue and organ adaptations and damage.",
+  "objective": "To provide an overview of current knowledge of SARS-CoV-2 biological effects from basic biology to clinical outcomes, highlighting extracellular and circulating signals and physiological effects of viral disease.",
+  "methods": "Comprehensive literature review integrating virological, animal, and clinical studies to understand mechanisms driving varied clinical diagnoses and observations.",
+  "results": "SARS-CoV-2 infection causes systemic metabolic adaptations, humoral changes, cardiovascular alterations, immune dysregulation, and multi-organ damage through various mechanisms including mitochondrial dysfunction, cytokine storms, and endothelial injury.",
+  "conclusion": "COVID-19 is a pleiotropic, complex condition with viral insults and cellular adaptations differing across contexts, requiring integrated understanding from cellular to organ systems for effective interventions.",
+  "metadata": {
+    "authors": ["S. Anand Narayanan", "David A. Jamison Jr.", "FJE", "AB", "and others"],
+    "publication_date": "",
+    "doi": "",
+    "journal": "European Journal of Human Genetics"
+  },
+  "extracted_entities": {
+    "core_problems": ["Viral infection in confined environments", "Systemic physiological adaptations to pathogens", "Multi-organ dysfunction in isolated settings", "Immune system dysregulation in space analogs", "Metabolic alterations under stress conditions"],
+    "solution_types": ["Biological pathway analysis", "Biomarker identification", "Therapeutic target discovery", "Physiological monitoring approaches"],
+    "key_techniques": ["Metabolomic profiling", "Lipidomic analysis", "Transcriptomic studies", "Exosome characterization", "Autopsy tissue analysis", "Organoid models"],
+    "benefits": ["Understanding systemic viral effects", "Identifying diagnostic biomarkers", "Revealing therapeutic targets", "Informing countermeasure development"],
+    "key_outcomes": ["SARS-CoV-2 causes mitochondrial suppression and metabolic shifts", "Virus induces endothelial dysfunction and cardiovascular damage", "Immune dysregulation involves cytokine storms and lymphopenia", "Multi-organ infection persists long-term in PASC", "Non-coding RNAs play regulatory roles in infection"],
+    "confidence": "High - based on multiple clinical studies, autopsy findings, and experimental models",
+    "gaps": ["Lack of human data on ACE2 expression in endocrine tissues under pathological conditions", "Limited understanding of long-term cardiovascular mitochondrial adaptations", "Insufficient data on SARS-CoV-2 effects on GI physiology", "Uncertainty regarding SARS-CoV-2 neuroinvasion mechanisms"],
+    "opportunities": ["Development of space-relevant viral countermeasures", "Multi-system physiological monitoring for crew health", "Biomarker panels for early detection of systemic dysfunction", "Understanding viral persistence in isolated environments"],
+    "category": ["Human Physiology", "Crew Health", "Biomarker Research", "Immunology", "Metabolic Research"]
+  },
+  "learning_notes": [
+    {
+      "id": "LN1",
+      "note": "SARS-CoV-2 infection causes significant mitochondrial dysfunction, suppressing oxidative phosphorylation and TCA cycle metabolites like citrate, fumarate, and malate, while increasing glycolysis and shunting toward pentose phosphate pathways. These metabolic shifts correlate with disease severity and represent potential biomarkers for monitoring physiological stress in confined environments."
+    },
+    {
+      "id": "LN2",
+      "note": "The virus directly interacts with the renin-angiotensin system (RAS) through ACE2 receptors, causing imbalance with decreased ACE and increased ACE2, renin, angiotensin, and bradykinin. This dysregulation leads to cardiovascular symptoms and could inform monitoring of cardiovascular adaptations in spaceflight conditions."
+    },
+    {
+      "id": "LN3",
+      "note": "Exosomes from SARS-CoV-2 infected patients contain viral components and immunomodulatory molecules that can stimulate inflammatory pathways in endothelial cells. Exosomes containing ACE2 can act as decoys to inhibit viral entry, suggesting potential therapeutic applications for viral protection in isolated environments."
+    },
+    {
+      "id": "LN4",
+      "note": "Non-coding RNAs including miRNAs, lncRNAs, and circRNAs play significant regulatory roles in SARS-CoV-2 infection. Circulating miRNA hsa-miR-2392 drives mitochondrial gene suppression and inflammation, while specific lncRNAs correlate with viral loads and immune responses, offering diagnostic potential."
+    },
+    {
+      "id": "LN5",
+      "note": "Cardiovascular adaptations include direct viral infection of endothelial cells, micro/macrovascular thrombosis, and suppression of cardiac functional markers. Autopsy studies show SARS-CoV-2 presence in myocardial tissue with decreased expression of TNNI3, TNNT2, and other cardiac markers despite no histological changes."
+    },
+    {
+      "id": "LN6",
+      "note": "Immune dysregulation involves both innate and adaptive systems, with neutrophil activation, NETosis, type I interferon signaling disruption, and lymphopenia. Severe COVID-19 shows elevated IL-6, IL-8, TNF-α with increased NF-κB activity, while airway inflammation shows different cytokine patterns than systemic circulation."
+    },
+    {
+      "id": "LN7",
+      "note": "Post-acute sequelae (PASC/long COVID) involves persistent viral presence across multiple organs including brain tissue for up to seven months, chronic fatigue potentially from mitochondrial dysfunction, elevated type I/III interferons, activated innate immune cells, and decreased naive T and B cells, highlighting long-term health risks relevant to extended missions."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "Q1",
+      "question": "Which metabolic pathway shows significant suppression during SARS-CoV-2 infection according to the review?",
+      "options": ["Glycolysis", "Tricarboxylic acid (TCA) cycle", "Pentose phosphate pathway", "Beta-oxidation of fatty acids"],
+      "answer": "Tricarboxylic acid (TCA) cycle"
+    },
+    {
+      "id": "Q2",
+      "question": "What role do exosomes containing ACE2 play in SARS-CoV-2 infection?",
+      "options": ["Enhance viral replication", "Serve as decoys to inhibit viral entry", "Promote cytokine storm development", "Facilitate blood-brain barrier crossing"],
+      "answer": "Serve as decoys to inhibit viral entry"
+    },
+    {
+      "id": "Q3",
+      "question": "Which non-coding RNA was specifically identified as driving mitochondrial gene suppression and inflammation in COVID-19 patients?",
+      "options": ["hsa-miR-2392", "LASI lncRNA", "NRIR circRNA", "miR-146a"],
+      "answer": "hsa-miR-2392"
+    },
+    {
+      "id": "Q4",
+      "question": "What cardiovascular finding was observed in COVID-19 autopsy studies despite no histological changes?",
+      "options": ["Increased coronary artery plaque", "Decreased expression of cardiac functional markers", "Hypertrophic cardiomyopathy", "Valvular calcification"],
+      "answer": "Decreased expression of cardiac functional markers"
+    },
+    {
+      "id": "Q5",
+      "question": "How long did the postmortem study detect SARS-CoV-2 persistence in non-respiratory tissues after symptom onset?",
+      "options": ["2 weeks", "1 month", "3 months", "Over 7 months"],
+      "answer": "Over 7 months"
+    }
+  ]
+}
